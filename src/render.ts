@@ -9,16 +9,16 @@ let fps = 30;
  * @param composition The composition to render
  */
 export async function render(composition: core.Composition) {
-  if (loader.style.display != 'none') return;
+  //if (loader.style.display != 'none') return;
 
   try {
     const encoder = new core.Encoder(composition, { debug: true, fps });
 
     // display the progress
     encoder.on('render', (event) => {
-      const { progress, total } = event.detail;
-      container.style.display = 'flex';
-      text.innerHTML = `${Math.round(progress * 100 / total)}%`;
+      // const { progress, total } = event.detail;
+      // container.style.display = 'flex';
+      // text.innerHTML = `${Math.round(progress * 100 / total)}%`;
     })
 
     await encoder.render();
@@ -33,8 +33,8 @@ export async function render(composition: core.Composition) {
       alert(String(e))
     }
   } finally {
-    loader.style.display = 'none';
-    container.style.display = 'none';
+    //loader.style.display = 'none';
+    //container.style.display = 'none';
   }
 }
 

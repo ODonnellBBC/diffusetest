@@ -126,6 +126,10 @@ const Controls: React.FC<ControlProps> = ({
         playerRef.current.style.transformOrigin = 'center';
       
         //observer.observe(document.body);
+        playerRef.current.style.width = `${composition.width}px`;
+        playerRef.current.style.height = `${composition.height}px`;
+        playerRef.current.style.transform = `scale(${scale})`;
+        playerRef.current.style.transformOrigin = 'center';
       }
       else {
         console.log('missing composition');
@@ -150,6 +154,10 @@ const Controls: React.FC<ControlProps> = ({
     captionTextClip.text = text;
   }
 
+  const handleExport = () => {
+    render(composition);
+  }
+
   return (
     <>
       <div className="interface">
@@ -171,8 +179,8 @@ const Controls: React.FC<ControlProps> = ({
           </div>
           <span id="time">{`${composition.time()}`}</span>
             <Gauge></Gauge>
-          <button id="export" type="button">
-            <div className="loader"></div>
+          <button id="export" type="button" onClick={() => handleExport()}>
+            {/* <div className="loader"></div> */}
             Export
           </button>
         </div>
