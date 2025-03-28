@@ -1,5 +1,6 @@
 import * as core from '@diffusionstudio/core';
-import React, { useEffect } from 'react';
+import { PixelateFilter } from 'pixi-filters';
+import React, { useEffect, useState } from 'react';
 import { render } from './render';
 import { Icon, Play, Pause, SkipForward, SkipBack, Gauge } from 'lucide-react';
 import { Composition, VideoClip, VideoSource, TextClip, Font, Keyframe } from '@diffusionstudio/core';
@@ -106,6 +107,7 @@ const Controls: React.FC<ControlProps> = ({
     scale: new Keyframe([0, 10], [0.3, 1]),
     fontSize: 34
   })
+  const pixelFilter = new PixelateFilter(20);
   composition.add(captionTextClip);
 
   useEffect(() => {
@@ -158,6 +160,24 @@ const Controls: React.FC<ControlProps> = ({
     render(composition);
   }
 
+  const [filterEnabled, setFilterEnabled] = useState(false);
+  const changeFilter = () => {
+    if (filterEnabled) {
+      composition.pause();
+      composition.remove(clip);
+      clip.filters = undefined;
+      composition.add(clip);
+      setFilterEnabled(false);
+    } else {
+      composition.pause();
+      composition.remove(clip);
+      clip.filters = pixelFilter;
+      composition.add(clip);
+      setFilterEnabled(true);
+    }
+  }
+
+
   return (
     <>
       <div className="interface">
@@ -170,6 +190,9 @@ const Controls: React.FC<ControlProps> = ({
         <div className="controls">
           <label>
             Caption Text: <input name="caption-input" onInput={(event) => updateCaption(event.target.value)} />
+          </label>
+          <label>
+            Filter: <input type="checkbox" name="filter-input" onInput={() => changeFilter()} />
           </label>
           <div className="playback" id="playback">
             <SkipBack onClick={() => composition.seek(0)}></SkipBack>
